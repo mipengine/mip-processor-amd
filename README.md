@@ -1,7 +1,7 @@
 mip-processor-amd
 ===========
 
-MIP Processor For AMD
+MIP Processor For AMD Compile and Pack
 
 
 ### usage
