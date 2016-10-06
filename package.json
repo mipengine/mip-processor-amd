@@ -1,7 +1,7 @@
 {
     "name": "mip-processor-amd",
-    "description": "MIP Processor For AMD Compile",
-    "version": "1.0.0-alpha.1",
+    "description": "MIP Processor For AMD",
+    "version": "1.0.0",
 
     "keywords": [
         "mip",
