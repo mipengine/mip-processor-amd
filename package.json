@@ -1,0 +1,41 @@
+{
+    "name": "mip-processor-amd",
+    "description": "MIP Processor For AMD Compile",
+    "version": "1.0.0-alpha.1",
+
+    "keywords": [
+        "mip",
+        "tool",
+        "build",
+        "processor",
+        "amd"
+    ],
+
+    "files": [
+        "lib",
+        "index.js"
+    ],
+
+    "dependencies": {
+        "esprima": "~2.7.3",
+        "estraverse": "^4.2.0",
+        "escodegen": "^1.8.1",
+        "mip-processor": "^1.0.0"
+    },
+
+    "engines": {
+        "node": ">= 4.0.0"
+    },
+
+    "contributors": [
+        { "name": "erik", "email": "errorrik@gmail.com" }
+    ],
+
+    "main": "index.js",
+
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mipengine/mip-processor-amd.git"
+    }
+}
