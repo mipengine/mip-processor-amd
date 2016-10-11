@@ -11,23 +11,27 @@ function MockFile(options) {
 }
 
 MockFile.prototype.setData = function (data) {
-    this.data = data
+    this.data = data;
+};
+
+MockFile.prototype.getData = function () {
+    return this.data;
 };
 
 function MockBuilder() {
-    this.processFiles = [];
+    this.files = [];
 }
 
-MockBuilder.prototype.getProcessFiles = function () {
-    return this.processFiles;
+MockBuilder.prototype.getFiles = function () {
+    return this.files;
 };
 
-MockBuilder.prototype.addProcessFiles = function (file) {
-    return this.processFiles.push(file);
+MockBuilder.prototype.addFile = function (file) {
+    return this.files.push(file);
 };
 
 MockBuilder.prototype.getFile = function (path) {
-    return this.processFiles.find(function (file) {
+    return this.files.find(function (file) {
         return file.fullPath === path;
     });
 };
@@ -70,10 +74,10 @@ describe("AMD Compiler", function () {
             relativePath: 'src/a/main.js'
         });
         var builder = new MockBuilder();
-        builder.addProcessFiles(file);
+        builder.addFile(file);
 
         processor.process(builder).then(function () {
-            expect(file.data).toMatch(
+            expect(file.getData()).toMatch(
                 genDefinePattern('a/main', ['require', './b', 'pkg', '../c'])
             );
 
@@ -94,10 +98,10 @@ describe("AMD Compiler", function () {
             relativePath: 'src/a/main.js'
         });
         var builder = new MockBuilder();
-        builder.addProcessFiles(file);
+        builder.addFile(file);
 
         processor.process(builder).then(function () {
-            expect(file.data).toMatch(
+            expect(file.getData()).toMatch(
                 genDefinePattern('a/main', ['./b', 'pkg', '../c'])
             );
 
@@ -118,10 +122,10 @@ describe("AMD Compiler", function () {
             relativePath: 'src/a/main.js'
         });
         var builder = new MockBuilder();
-        builder.addProcessFiles(file);
+        builder.addFile(file);
 
         processor.process(builder).then(function () {
-            expect(file.data).toMatch(
+            expect(file.getData()).toMatch(
                 genDefinePattern('a/gap/main', ['require', './b', 'pkg', '../c'])
             );
 
@@ -148,10 +152,10 @@ describe("AMD Compiler", function () {
             relativePath: 'dep/ui/util.js'
         });
         var builder = new MockBuilder();
-        builder.addProcessFiles(file);
+        builder.addFile(file);
 
         processor.process(builder).then(function () {
-            expect(file.data).toMatch(
+            expect(file.getData()).toMatch(
                 genDefinePattern('ui/util', ['require', './b', 'pkg'])
             );
 
@@ -178,13 +182,13 @@ describe("AMD Compiler", function () {
             relativePath: 'dep/ui/main.js'
         });
         var builder = new MockBuilder();
-        builder.addProcessFiles(file);
+        builder.addFile(file);
 
         processor.process(builder).then(function () {
-            expect(file.data).toMatch(
+            expect(file.getData()).toMatch(
                 genDefinePattern('ui/main', ['require', './b', 'pkg'])
             );
-            expect(file.data).toMatch(
+            expect(file.getData()).toMatch(
                 genDefinePattern('ui', ['ui/main'])
             );
 
@@ -240,29 +244,29 @@ describe("AMD Packer", function () {
             relativePath: 'dep/pkg/index.js'
         });
         var builder = new MockBuilder();
-        builder.addProcessFiles(mainFile);
-        builder.addProcessFiles(bFile);
-        builder.addProcessFiles(confFile);
-        builder.addProcessFiles(pkgFile);
+        builder.addFile(mainFile);
+        builder.addFile(bFile);
+        builder.addFile(confFile);
+        builder.addFile(pkgFile);
 
         processor.process(builder)
             .then(function () {
                 return packer.process(builder);
             })
             .then(function () {
-                expect(mainFile.data).toMatch(
+                expect(mainFile.getData()).toMatch(
                     genDefinePattern('ui/main', ['require', './b', 'pkg'])
                 );
-                expect(mainFile.data).toMatch(
+                expect(mainFile.getData()).toMatch(
                     genDefinePattern('ui', ['ui/main'])
                 );
-                expect(mainFile.data).toMatch(
+                expect(mainFile.getData()).toMatch(
                     genDefinePattern('conf', [])
                 );
-                expect(mainFile.data).toMatch(
+                expect(mainFile.getData()).toMatch(
                     genDefinePattern('pkg/index', ['require', './b'])
                 );
-                expect(mainFile.data).toMatch(
+                expect(mainFile.getData()).toMatch(
                     genDefinePattern('pkg', ['pkg/index'])
                 );
 
