@@ -20,7 +20,7 @@
         "esprima": "~2.7.3",
         "estraverse": "^4.2.0",
         "escodegen": "^1.8.1",
-        "mip-processor": "^1.0.0"
+        "mip-processor": "^1.1.0"
     },
 
     "devDependencies": {
