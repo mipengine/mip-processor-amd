@@ -36,6 +36,9 @@ MockBuilder.prototype.getFile = function (path) {
     });
 };
 
+MockBuilder.prototype.notify = function () {
+};
+
 function regexpLiteral(source) {
     return source.replace(/[\^\[\]\$\(\)\{\}\?\*\.\+]/g, function (c) {
         return '\\' + c;
