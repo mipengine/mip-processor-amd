@@ -83,6 +83,7 @@ describe("AMD Compiler", function () {
             expect(file.getData()).toMatch(
                 genDefinePattern('a/main', ['require', './b', 'pkg', '../c'])
             );
+            expect(file.getData().indexOf(';;') < 0).toBeTruthy();
 
             done();
         });
@@ -107,6 +108,7 @@ describe("AMD Compiler", function () {
             expect(file.getData()).toMatch(
                 genDefinePattern('a/main', ['./b', 'pkg', '../c'])
             );
+            expect(file.getData().indexOf(';;') < 0).toBeTruthy();
 
             done();
         });
@@ -131,6 +133,7 @@ describe("AMD Compiler", function () {
             expect(file.getData()).toMatch(
                 genDefinePattern('a/gap/main', ['require', './b', 'pkg', '../c'])
             );
+            expect(file.getData().indexOf(';;') < 0).toBeTruthy();
 
             done();
         });
@@ -161,6 +164,7 @@ describe("AMD Compiler", function () {
             expect(file.getData()).toMatch(
                 genDefinePattern('ui/util', ['require', './b', 'pkg'])
             );
+            expect(file.getData().indexOf(';;') < 0).toBeTruthy();
 
             done();
         });
@@ -194,6 +198,43 @@ describe("AMD Compiler", function () {
             expect(file.getData()).toMatch(
                 genDefinePattern('ui', ['ui/main'])
             );
+            expect(file.getData()).toMatch(/s*define\(/);
+            expect(file.getData().indexOf(';;') < 0).toBeTruthy();
+
+            done();
+        });
+    });
+
+    it("package main module in if, gen two define", function (done) {
+        var processor = new Compiler({
+            config: {
+                baseUrl: '/project/src',
+                packages: [
+                    {
+                        name: 'ui',
+                        location: '../dep/ui'
+                    }
+                ]
+            }
+        });
+
+        var file = new MockFile({
+            data: 'if (define && define.amd) define(function (require) {require("./b");require("pkg");}); else alert(1)',
+            fullPath: '/project/dep/ui/main.js',
+            relativePath: 'dep/ui/main.js'
+        });
+        var builder = new MockBuilder();
+        builder.addFile(file);
+
+        processor.process(builder).then(function () {
+            expect(file.getData()).toMatch(
+                genDefinePattern('ui/main', ['require', './b', 'pkg'])
+            );
+            expect(file.getData()).toMatch(
+                genDefinePattern('ui', ['ui/main'])
+            );
+            expect(file.getData()).toMatch(/s*define\(/);
+            expect(file.getData().indexOf(';;') < 0).toBeTruthy();
 
             done();
         });
